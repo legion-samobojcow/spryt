@@ -27,7 +27,7 @@
             align-items: center;
         }
 
-        /* Górny nagłówek */
+        /* NAGŁÓWEK */
         .header {
             width: 100%;
             height: 70px;
@@ -45,13 +45,13 @@
             font-size: 38px;
             font-weight: 900;
             letter-spacing: 8px;
-            color: #ffffff;
+            color: white;
             text-shadow:
                 0 0 8px rgba(255,255,255,0.4),
                 0 0 20px rgba(150,0,255,0.6);
         }
 
-        /* Miejsce na grę */
+        /* OBSZAR GRY */
         .game-area {
             width: 100%;
             height: calc(100vh - 70px);
@@ -63,7 +63,6 @@
             background: #000;
         }
 
-        /* Ukrywamy pasek sterowania TurboWarp */
         .game-frame {
             width: 100%;
             height: 100%;
@@ -81,7 +80,93 @@
             display: block;
         }
 
-        /* Nasz własny przycisk fullscreen */
+        /* EKRAN STARTOWY */
+        .start-screen {
+            position: absolute;
+            inset: 0;
+            z-index: 15;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(55, 0, 75, 0.45),
+                    rgba(0, 0, 0, 0.96) 70%
+                );
+
+            text-align: center;
+        }
+
+        .start-title {
+            font-size: 64px;
+            font-weight: 900;
+            letter-spacing: 12px;
+            color: white;
+
+            text-shadow:
+                0 0 10px rgba(255,255,255,0.5),
+                0 0 25px rgba(160,0,255,0.8),
+                0 0 50px rgba(100,0,150,0.6);
+
+            margin-bottom: 15px;
+        }
+
+        .start-subtitle {
+            font-size: 25px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            color: #b66cff;
+            margin-bottom: 25px;
+        }
+
+        .start-description {
+            max-width: 600px;
+            padding: 0 20px;
+
+            font-size: 20px;
+            line-height: 1.5;
+            color: #eeeeee;
+
+            margin-bottom: 40px;
+        }
+
+        .start-button {
+            padding: 18px 45px;
+
+            border: 2px solid #b66cff;
+            border-radius: 12px;
+
+            background: rgba(100, 0, 150, 0.25);
+            color: white;
+
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: 2px;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 0 15px rgba(170, 0, 255, 0.5),
+                inset 0 0 15px rgba(170, 0, 255, 0.15);
+
+            transition: 0.2s;
+        }
+
+        .start-button:hover {
+            transform: scale(1.06);
+
+            background: rgba(130, 0, 180, 0.65);
+
+            box-shadow:
+                0 0 25px rgba(190, 0, 255, 0.8),
+                0 0 50px rgba(120, 0, 180, 0.4);
+        }
+
+        /* FULLSCREEN */
         .fullscreen-button {
             position: absolute;
             right: 18px;
@@ -112,8 +197,9 @@
             transform: scale(1.05);
         }
 
-        /* Na małych ekranach */
+        /* MAŁE EKRANY */
         @media (max-width: 600px) {
+
             .header {
                 height: 55px;
                 min-height: 55px;
@@ -127,6 +213,24 @@
             .game-area {
                 height: calc(100vh - 55px);
             }
+
+            .start-title {
+                font-size: 42px;
+                letter-spacing: 7px;
+            }
+
+            .start-subtitle {
+                font-size: 19px;
+            }
+
+            .start-description {
+                font-size: 17px;
+            }
+
+            .start-button {
+                font-size: 18px;
+                padding: 15px 30px;
+            }
         }
     </style>
 </head>
@@ -139,16 +243,41 @@
 
     <div class="game-area" id="gameArea">
 
-        <div class="game-frame" id="gameFrame">
+        <div class="game-frame">
 
             <iframe
                 id="game"
-                src="https://turbowarp.org/1378788515/embed?autoplay"
+                src="https://turbowarp.org/1378788515/embed"
                 allowfullscreen>
             </iframe>
 
         </div>
 
+        <!-- EKRAN STARTOWY -->
+        <div class="start-screen" id="startScreen">
+
+            <div class="start-title">
+                SPRYT
+            </div>
+
+            <div class="start-subtitle">
+                15 SEKUND
+            </div>
+
+            <div class="start-description">
+                Klikaj w Jokera i zdobądź jak najwięcej punktów,
+                zanim skończy się czas!
+            </div>
+
+            <button
+                class="start-button"
+                onclick="startGame()">
+                ▶ ROZPOCZNIJ GRĘ
+            </button>
+
+        </div>
+
+        <!-- PEŁNY EKRAN -->
         <button
             class="fullscreen-button"
             onclick="toggleFullscreen()"
@@ -159,15 +288,34 @@
     </div>
 
     <script>
+
+        function startGame() {
+
+            const iframe = document.getElementById("game");
+            const startScreen = document.getElementById("startScreen");
+
+            startScreen.style.display = "none";
+
+            iframe.src =
+                "https://turbowarp.org/1378788515/embed?autoplay";
+        }
+
         function toggleFullscreen() {
-            const gameArea = document.getElementById("gameArea");
+
+            const gameArea =
+                document.getElementById("gameArea");
 
             if (!document.fullscreenElement) {
+
                 gameArea.requestFullscreen();
+
             } else {
+
                 document.exitFullscreen();
+
             }
         }
+
     </script>
 
 </body>
