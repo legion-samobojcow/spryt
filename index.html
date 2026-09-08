@@ -311,7 +311,30 @@
 
             }
         }
+window.addEventListener("message", async (event) => {
+    if (event.data?.type !== "spryt-score") return;
 
+    const score = Number(event.data.score);
+    const params = new URLSearchParams(window.location.search);
+    const channelId = params.get("channel");
+
+    if (!Number.isInteger(score) || !channelId) return;
+
+    try {
+        await fetch("https://spryt-bot.onrender.com/score", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                score: score,
+                channelId: channelId
+            })
+        });
+    } catch (error) {
+        console.error("Nie udało się wysłać wyniku:", error);
+    }
+});
     </script>
 
 </body>
